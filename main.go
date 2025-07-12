@@ -163,6 +163,22 @@ func main() {
 		),
 	)
 
+	updateTemplateTool := mcp.NewTool("update-task-template",
+		mcp.WithDescription("Update an existing task template with new parameters, tasks, or metadata. TEMPLATE MANAGEMENT: Use this tool to refine and improve existing templates based on experience. Always include the template ID in the template JSON to specify which template to update. This maintains template evolution and continuous improvement. Always use the full functionality of this tool and its parameters."),
+		mcp.WithString("template",
+			mcp.Required(),
+			mcp.Description("JSON representation of the updated task template structure including the ID."),
+		),
+	)
+
+	deleteTemplateTool := mcp.NewTool("delete-task-template",
+		mcp.WithDescription("Delete a task template by ID. CAUTION: This permanently removes the template and cannot be undone. Use this tool to clean up obsolete or incorrect templates. Always verify the template ID before deletion. This helps maintain a clean template library. Always use the full functionality of this tool and its parameters."),
+		mcp.WithString("template_id",
+			mcp.Required(),
+			mcp.Description("The ID of the template to delete."),
+		),
+	)
+
 	// Create actions with dependency injection
 	askAction := actions.NewAskAction()
 
@@ -178,6 +194,8 @@ func main() {
 	s.AddTool(getTemplateTool, actions.NewGetTemplateHandler(repositories.Template))
 	s.AddTool(createTemplateTool, actions.NewCreateTemplateHandler(repositories.Template))
 	s.AddTool(instantiateTemplateTool, actions.NewInstantiateTemplateHandler(repositories.Template, repositories.Task))
+	s.AddTool(updateTemplateTool, actions.NewUpdateTemplateHandler(repositories.Template))
+	s.AddTool(deleteTemplateTool, actions.NewDeleteTemplateHandler(repositories.Template))
 
 	// Start the stdio server
 	if err := server.ServeStdio(s); err != nil {

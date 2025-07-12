@@ -18,14 +18,24 @@ Please use with caution and expect potential issues. Contributions and feedback 
 - **🧠 Knowledge Management**: Store, retrieve, and organize markdown files by project
 - **📋 Task Management**: Systematic task queue for complex workflow execution
 - **🎯 Template System**: Create and use reusable workflow templates with parameters
-- **💬 User Interaction**: Professional popup dialogs for user questions (Linux/OSX)
+- **💬 User Interaction**: Popup dialogs for user questions (Linux/OSX)
 - **🔄 Persistent Storage**: SQLite-based storage in user's home directory
 
 ## Installation
 
 ### Prerequisites
 
-- Go 1.24.2 or higher
+#### Core Requirements
+
+- **Go 1.24.2 or higher** - [Download from golang.org](https://golang.org/dl/)
+
+#### Operating System Requirements
+
+##### Linux
+- **Zenity** - Required for popup dialog functionality (may need to be installed on some distributions)
+
+##### macOS
+- **AppleScript** - Built-in (no additional installation required)
 
 ### Install
 
@@ -94,6 +104,8 @@ Once configured, the Brain MCP server provides the following tools in your LLM c
 - **`list-task-templates`**: Discover available reusable workflow templates
 - **`get-task-template`**: Get detailed information about a specific template
 - **`create-task-template`**: Create new reusable task workflow templates
+- **`update-task-template`**: Update existing templates with new parameters, tasks, or metadata
+- **`delete-task-template`**: Permanently delete templates (use with caution)
 - **`instantiate-task-template`**: Generate tasks from templates with specific parameters
 
 ### User Interaction

@@ -29,6 +29,8 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 - **`list-task-templates`**(category?) - Discover reusable workflow templates
 - **`get-task-template`**(template_id) - Get template details and parameters
 - **`create-task-template`**(template) - Create reusable task workflows
+- **`update-task-template`**(template) - Update existing template with new parameters/tasks
+- **`delete-task-template`**(template_id) - Delete template permanently (use with caution)
 - **`instantiate-task-template`**(template_id, chat_session_id, parameters?) - Generate tasks from templates
 
 ### User Interaction
