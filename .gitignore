@@ -1,0 +1,6 @@
+.vscode
+.cursor
+.idea
+node_modules
+mcp-brain
+golangci-lint
