@@ -1,6 +1,6 @@
 # Brain MCP Server 🧠
 
-A comprehensive memory and task management system designed for LLM workflows in code editors that support MCP (Model Control Protocol) like Cursor, Claude Desktop, and others.
+A comprehensive memory and task management system designed for LLM workflows in code editors that support MCP (Model Context Protocol) like Cursor, Claude Desktop, and others.
 
 ## Features
 
