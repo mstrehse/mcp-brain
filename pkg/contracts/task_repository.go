@@ -8,7 +8,6 @@ type Task struct {
 	ChatSessionID string    `json:"chat_session_id"`
 	Content       string    `json:"content"`
 	CreatedAt     time.Time `json:"created_at"`
-	Status        string    `json:"status"` // "pending", "completed"
 }
 
 // TaskRepository defines the interface for task queue operations

@@ -43,7 +43,7 @@ func createTestTemplate() *contracts.TaskTemplate {
 			"Implement ${feature_name} with ${priority} priority",
 			"Test ${feature_name} functionality",
 		},
-		EstimatedTime: "2-3 hours",
+
 		Prerequisites: []string{"Git repository", "Development environment"},
 	}
 }
@@ -90,9 +90,6 @@ func TestSqliteRepository_CreateGetTemplate(t *testing.T) {
 	}
 	if retrieved.Category != template.Category {
 		t.Errorf("Expected category %s, got %s", template.Category, retrieved.Category)
-	}
-	if retrieved.EstimatedTime != template.EstimatedTime {
-		t.Errorf("Expected estimated_time %s, got %s", template.EstimatedTime, retrieved.EstimatedTime)
 	}
 
 	// Verify parameters

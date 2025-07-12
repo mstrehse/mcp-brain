@@ -40,13 +40,12 @@ func (r *SqliteRepository) createTables() error {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		chat_session_id TEXT NOT NULL,
 		content TEXT NOT NULL,
-		status TEXT NOT NULL DEFAULT 'pending',
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 	
 	CREATE INDEX IF NOT EXISTS idx_chat_session ON tasks(chat_session_id);
-	CREATE INDEX IF NOT EXISTS idx_status ON tasks(status);
-	CREATE INDEX IF NOT EXISTS idx_chat_session_status ON tasks(chat_session_id, status);
+	CREATE INDEX IF NOT EXISTS idx_created_at ON tasks(created_at);
+	CREATE INDEX IF NOT EXISTS idx_chat_session_created_at ON tasks(chat_session_id, created_at);
 	`
 
 	_, err := r.db.Exec(query)
@@ -72,8 +71,8 @@ func (r *SqliteRepository) AddTasks(chatSessionID string, contents []string) ([]
 
 	// Prepare the insert statement
 	stmt, err := tx.Prepare(`
-		INSERT INTO tasks (chat_session_id, content, status, created_at)
-		VALUES (?, ?, 'pending', CURRENT_TIMESTAMP)
+		INSERT INTO tasks (chat_session_id, content, created_at)
+		VALUES (?, ?, CURRENT_TIMESTAMP)
 	`)
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare statement: %w", err)
@@ -133,9 +132,9 @@ func (r *SqliteRepository) GetTask(chatSessionID string) (*contracts.Task, error
 
 	// Find the oldest pending task for this chat session
 	query := `
-	SELECT id, chat_session_id, content, status, created_at
+	SELECT id, chat_session_id, content, created_at
 	FROM tasks
-	WHERE chat_session_id = ? AND status = 'pending'
+	WHERE chat_session_id = ?
 	ORDER BY created_at ASC, id ASC
 	LIMIT 1
 	`
@@ -145,7 +144,6 @@ func (r *SqliteRepository) GetTask(chatSessionID string) (*contracts.Task, error
 		&task.ID,
 		&task.ChatSessionID,
 		&task.Content,
-		&task.Status,
 		&task.CreatedAt,
 	)
 	if err != nil {
@@ -155,11 +153,11 @@ func (r *SqliteRepository) GetTask(chatSessionID string) (*contracts.Task, error
 		return nil, fmt.Errorf("failed to get task: %w", err)
 	}
 
-	// Update the task status to completed (effectively removing it from the queue)
-	updateQuery := `UPDATE tasks SET status = 'completed' WHERE id = ?`
-	_, err = tx.Exec(updateQuery, task.ID)
+	// Delete the task from the database (actually removing it from the queue)
+	deleteQuery := `DELETE FROM tasks WHERE id = ?`
+	_, err = tx.Exec(deleteQuery, task.ID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to update task status: %w", err)
+		return nil, fmt.Errorf("failed to delete task: %w", err)
 	}
 
 	// Commit the transaction
@@ -173,7 +171,7 @@ func (r *SqliteRepository) GetTask(chatSessionID string) (*contracts.Task, error
 // getTaskByID retrieves a task by its ID
 func (r *SqliteRepository) getTaskByID(id int) (*contracts.Task, error) {
 	query := `
-	SELECT id, chat_session_id, content, status, created_at
+	SELECT id, chat_session_id, content, created_at
 	FROM tasks
 	WHERE id = ?
 	`
@@ -183,7 +181,6 @@ func (r *SqliteRepository) getTaskByID(id int) (*contracts.Task, error) {
 		&task.ID,
 		&task.ChatSessionID,
 		&task.Content,
-		&task.Status,
 		&task.CreatedAt,
 	)
 	if err != nil {
@@ -191,4 +188,89 @@ func (r *SqliteRepository) getTaskByID(id int) (*contracts.Task, error) {
 	}
 
 	return &task, nil
+}
+
+// ClearTasksForSession removes all tasks for a specific chat session
+// This is useful for clearing the task queue when starting a new session
+func (r *SqliteRepository) ClearTasksForSession(chatSessionID string) error {
+	query := `DELETE FROM tasks WHERE chat_session_id = ?`
+	result, err := r.db.Exec(query, chatSessionID)
+	if err != nil {
+		return fmt.Errorf("failed to clear tasks for session: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected > 0 {
+		fmt.Printf("Cleared %d tasks for session %s\n", rowsAffected, chatSessionID)
+	}
+
+	return nil
+}
+
+// GetSessionSummary returns a summary of all chat sessions and their task counts
+// This is useful for debugging session ID collisions
+func (r *SqliteRepository) GetSessionSummary() (map[string]int, error) {
+	query := `
+	SELECT chat_session_id, COUNT(*) as task_count
+	FROM tasks
+	GROUP BY chat_session_id
+	ORDER BY task_count DESC
+	`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query session summary: %w", err)
+	}
+	defer rows.Close()
+
+	summary := make(map[string]int)
+	for rows.Next() {
+		var sessionID string
+		var taskCount int
+		if err := rows.Scan(&sessionID, &taskCount); err != nil {
+			return nil, fmt.Errorf("failed to scan session summary row: %w", err)
+		}
+		summary[sessionID] = taskCount
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("failed to iterate session summary rows: %w", err)
+	}
+
+	return summary, nil
+}
+
+// GetAllTasksForSession returns all tasks for a specific session (for debugging)
+func (r *SqliteRepository) GetAllTasksForSession(chatSessionID string) ([]*contracts.Task, error) {
+	query := `
+	SELECT id, chat_session_id, content, created_at
+	FROM tasks
+	WHERE chat_session_id = ?
+	ORDER BY created_at ASC, id ASC
+	`
+
+	rows, err := r.db.Query(query, chatSessionID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query tasks for session: %w", err)
+	}
+	defer rows.Close()
+
+	var tasks []*contracts.Task
+	for rows.Next() {
+		var task contracts.Task
+		if err := rows.Scan(&task.ID, &task.ChatSessionID, &task.Content, &task.CreatedAt); err != nil {
+			return nil, fmt.Errorf("failed to scan task row: %w", err)
+		}
+		tasks = append(tasks, &task)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("failed to iterate task rows: %w", err)
+	}
+
+	return tasks, nil
 }

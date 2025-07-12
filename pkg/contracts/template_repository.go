@@ -10,7 +10,6 @@ type TaskTemplate struct {
 	Category      string               `json:"category"`
 	Parameters    map[string]Parameter `json:"parameters"`
 	Tasks         []string             `json:"tasks"`
-	EstimatedTime string               `json:"estimated_time,omitempty"`
 	Prerequisites []string             `json:"prerequisites,omitempty"`
 	CreatedAt     time.Time            `json:"created_at"`
 	UpdatedAt     time.Time            `json:"updated_at"`

@@ -47,7 +47,6 @@ func (r *SqliteRepository) createTables() error {
 		category TEXT NOT NULL,
 		parameters TEXT NOT NULL DEFAULT '{}',
 		tasks TEXT NOT NULL DEFAULT '[]',
-		estimated_time TEXT,
 		prerequisites TEXT DEFAULT '[]',
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -89,8 +88,8 @@ func (r *SqliteRepository) CreateTemplate(template *contracts.TaskTemplate) erro
 	}
 
 	query := `
-	INSERT INTO task_templates (id, name, description, category, parameters, tasks, estimated_time, prerequisites, created_at, updated_at)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	INSERT INTO task_templates (id, name, description, category, parameters, tasks, prerequisites, created_at, updated_at)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`
 
 	_, err = r.db.Exec(query,
@@ -100,7 +99,6 @@ func (r *SqliteRepository) CreateTemplate(template *contracts.TaskTemplate) erro
 		template.Category,
 		string(parametersJSON),
 		string(tasksJSON),
-		template.EstimatedTime,
 		string(prerequisitesJSON),
 		template.CreatedAt,
 		template.UpdatedAt,
@@ -115,7 +113,7 @@ func (r *SqliteRepository) CreateTemplate(template *contracts.TaskTemplate) erro
 // GetTemplate retrieves a template by ID
 func (r *SqliteRepository) GetTemplate(id string) (*contracts.TaskTemplate, error) {
 	query := `
-	SELECT id, name, description, category, parameters, tasks, estimated_time, prerequisites, created_at, updated_at
+	SELECT id, name, description, category, parameters, tasks, prerequisites, created_at, updated_at
 	FROM task_templates
 	WHERE id = ?
 	`
@@ -130,7 +128,6 @@ func (r *SqliteRepository) GetTemplate(id string) (*contracts.TaskTemplate, erro
 		&template.Category,
 		&parametersJSON,
 		&tasksJSON,
-		&template.EstimatedTime,
 		&prerequisitesJSON,
 		&template.CreatedAt,
 		&template.UpdatedAt,
@@ -165,13 +162,13 @@ func (r *SqliteRepository) ListTemplates(category string) ([]*contracts.TaskTemp
 
 	if category == "" {
 		query = `
-		SELECT id, name, description, category, parameters, tasks, estimated_time, prerequisites, created_at, updated_at
+		SELECT id, name, description, category, parameters, tasks, prerequisites, created_at, updated_at
 		FROM task_templates
 		ORDER BY category, name
 		`
 	} else {
 		query = `
-		SELECT id, name, description, category, parameters, tasks, estimated_time, prerequisites, created_at, updated_at
+		SELECT id, name, description, category, parameters, tasks, prerequisites, created_at, updated_at
 		FROM task_templates
 		WHERE category = ?
 		ORDER BY name
@@ -202,7 +199,6 @@ func (r *SqliteRepository) ListTemplates(category string) ([]*contracts.TaskTemp
 			&template.Category,
 			&parametersJSON,
 			&tasksJSON,
-			&template.EstimatedTime,
 			&prerequisitesJSON,
 			&template.CreatedAt,
 			&template.UpdatedAt,
@@ -257,7 +253,7 @@ func (r *SqliteRepository) UpdateTemplate(template *contracts.TaskTemplate) erro
 
 	query := `
 	UPDATE task_templates
-	SET name = ?, description = ?, category = ?, parameters = ?, tasks = ?, estimated_time = ?, prerequisites = ?, updated_at = ?
+	SET name = ?, description = ?, category = ?, parameters = ?, tasks = ?, prerequisites = ?, updated_at = ?
 	WHERE id = ?
 	`
 
@@ -267,7 +263,6 @@ func (r *SqliteRepository) UpdateTemplate(template *contracts.TaskTemplate) erro
 		template.Category,
 		string(parametersJSON),
 		string(tasksJSON),
-		template.EstimatedTime,
 		string(prerequisitesJSON),
 		template.UpdatedAt,
 		template.ID,
