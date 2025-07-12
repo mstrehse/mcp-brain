@@ -124,6 +124,45 @@ func main() {
 		),
 	)
 
+	// Add template management tools
+	listTemplatesTools := mcp.NewTool("list-task-templates",
+		mcp.WithDescription("List all available task templates, optionally filtered by category. DISCOVERY PATTERN: Use this tool to discover reusable workflows and task patterns. Templates provide structured approaches to common work like code reviews, bug fixes, research, and development tasks. Start with this tool to see what templates are available before creating manual task lists. Always use the full functionality of this tool and its parameters."),
+		mcp.WithString("category",
+			mcp.Description("Optional category filter (e.g., 'development', 'testing', 'research')."),
+		),
+	)
+
+	getTemplateTool := mcp.NewTool("get-task-template",
+		mcp.WithDescription("Retrieve detailed information about a specific task template, including its parameters and task structure. INSPECTION PATTERN: Use this tool to understand what parameters a template requires and preview the tasks it will create. This helps you gather the right information before instantiating the template. Always use the full functionality of this tool and its parameters."),
+		mcp.WithString("template_id",
+			mcp.Required(),
+			mcp.Description("The ID of the template to retrieve."),
+		),
+	)
+
+	createTemplateTool := mcp.NewTool("create-task-template",
+		mcp.WithDescription("Create a new reusable task template with parameters and task patterns. PATTERN CREATION: Use this tool to capture successful workflows as reusable templates. Define parameters using ${param} syntax in task descriptions for dynamic content. This builds institutional knowledge and accelerates future similar work. Always use the full functionality of this tool and its parameters."),
+		mcp.WithString("template",
+			mcp.Required(),
+			mcp.Description("JSON representation of the task template structure."),
+		),
+	)
+
+	instantiateTemplateTool := mcp.NewTool("instantiate-task-template",
+		mcp.WithDescription("Create tasks from a template with specific parameters and add them to the current chat session. WORKFLOW ACCELERATION: Use this tool to quickly set up structured workflows from proven templates. The template parameters will be resolved and tasks added to your queue automatically. This is the preferred way to start complex work - templates over manual task creation. Always use the full functionality of this tool and its parameters."),
+		mcp.WithString("template_id",
+			mcp.Required(),
+			mcp.Description("The ID of the template to instantiate."),
+		),
+		mcp.WithString("chat_session_id",
+			mcp.Required(),
+			mcp.Description("The ID of the current chat session."),
+		),
+		mcp.WithString("parameters",
+			mcp.Description("JSON object containing parameter values for the template."),
+		),
+	)
+
 	// Create actions with dependency injection
 	askAction := actions.NewAskAction()
 
@@ -135,6 +174,10 @@ func main() {
 	s.AddTool(listMemoriesTool, actions.NewListKnowledgeHandler(repositories.Knowledge))
 	s.AddTool(addTasksTool, actions.NewAddTasksHandler(repositories.Task))
 	s.AddTool(getTaskTool, actions.NewGetTaskHandler(repositories.Task))
+	s.AddTool(listTemplatesTools, actions.NewListTemplatesHandler(repositories.Template))
+	s.AddTool(getTemplateTool, actions.NewGetTemplateHandler(repositories.Template))
+	s.AddTool(createTemplateTool, actions.NewCreateTemplateHandler(repositories.Template))
+	s.AddTool(instantiateTemplateTool, actions.NewInstantiateTemplateHandler(repositories.Template, repositories.Task))
 
 	// Start the stdio server
 	if err := server.ServeStdio(s); err != nil {

@@ -8,8 +8,9 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 ## CORE WORKFLOW (MANDATORY WHEN TRIGGERED)
 ```
 1. DISCOVER: list-memories → get-memory (review existing)
-2. PLAN: add-tasks (break down work systematically)  
+2. PLAN: list-task-templates → instantiate-task-template OR add-tasks (break down work systematically)  
 3. EXECUTE: get-task → work → store-memory → repeat until "no pending tasks"
+4. CAPTURE: create-task-template (for reusable workflows)
 ```
 
 ## TOOLS
@@ -24,15 +25,23 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 - **`add-tasks`**(chat_session_id, contents[]) - Break work into specific tasks
 - **`get-task`**(chat_session_id) - Get next task systematically
 
+### Template Management
+- **`list-task-templates`**(category?) - Discover reusable workflow templates
+- **`get-task-template`**(template_id) - Get template details and parameters
+- **`create-task-template`**(template) - Create reusable task workflows
+- **`instantiate-task-template`**(template_id, chat_session_id, parameters?) - Generate tasks from templates
+
 ### User Interaction
 - **`ask-user`**(question) - Professional popup dialogs (Linux/OSX)
 
 ## KEY PATTERNS
 - **Always** start with `list-memories` to understand existing context
-- **Always** use `ask-upser` to get feedback if you are not 100% sure or when there multiple options to go on
-- **Always** use `add-tasks` for complex work breakdown
+- **Always** use `ask-user` to get feedback if you are not 100% sure or when there multiple options to go on
+- **Prefer** `list-task-templates` and `instantiate-task-template` over manual `add-tasks` when patterns exist
+- **Always** use `add-tasks` for complex work breakdown (when no template applies)
 - **Continue** `get-task` calls until "no pending tasks" 
 - **Store** valuable insights with `store-memory`
+- **Create** `create-task-template` for reusable workflows after successful completions
 - **Prefer** systematic approaches over manual/ad-hoc work
 
 ## CRITICAL BEHAVIORS

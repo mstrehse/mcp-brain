@@ -2,10 +2,22 @@
 
 A comprehensive memory and task management system designed for LLM workflows in code editors that support MCP (Model Context Protocol) like Cursor, Claude Desktop, and others.
 
+## ⚠️ Development Status
+
+**This project is under active development and not yet ready for production use.**
+
+- 🚧 APIs may change without notice
+- 🧪 Some features are experimental
+- 📋 Documentation may be incomplete or outdated
+- 🐛 Bugs and breaking changes are expected
+
+Please use with caution and expect potential issues. Contributions and feedback are welcome!
+
 ## Features
 
 - **🧠 Knowledge Management**: Store, retrieve, and organize markdown files by project
 - **📋 Task Management**: Systematic task queue for complex workflow execution
+- **🎯 Template System**: Create and use reusable workflow templates with parameters
 - **💬 User Interaction**: Professional popup dialogs for user questions (Linux/OSX)
 - **🔄 Persistent Storage**: SQLite-based storage in user's home directory
 
@@ -77,17 +89,16 @@ Once configured, the Brain MCP server provides the following tools in your LLM c
 - **`add-tasks`**: Add multiple tasks to the queue for systematic execution
 - **`get-task`**: Retrieve and remove the next pending task from the queue
 
+### Template Management
+
+- **`list-task-templates`**: Discover available reusable workflow templates
+- **`get-task-template`**: Get detailed information about a specific template
+- **`create-task-template`**: Create new reusable task workflow templates
+- **`instantiate-task-template`**: Generate tasks from templates with specific parameters
+
 ### User Interaction
 
 - **`ask-user`**: Ask users questions via popup dialogs (Linux/OSX)
-
-### Data Storage
-
-The server stores data in `~/.mcp-brain/` directory:
-
-- **Knowledge files**: Organized by project as markdown files
-- **SQLite database**: For task queues and metadata
-- **Automatic cleanup**: Proper database connection handling
 
 ## License
 
@@ -99,15 +110,17 @@ This MCP server is designed to integrate with LLM workflows by providing:
 
 1. **Systematic Task Execution**: Break complex work into manageable tasks
 2. **Knowledge Persistence**: Build institutional memory across sessions
-3. **Professional User Interaction**: Popup dialogs instead of chat-based questions
-4. **Context Preservation**: Maintain understanding across interruptions
+3. **Template-Based Workflows**: Reusable task patterns with parameter substitution
+4. **User Interaction**: Popup dialogs instead of chat-based questions
+5. **Context Preservation**: Maintain understanding across interruptions
 
 ### Recommended Usage Pattern
 
 1. **Discover**: Use `list-memories` to understand existing knowledge
-2. **Plan**: Use `add-tasks` to break down complex work systematically
+2. **Plan**: Use `list-task-templates` and `instantiate-task-template` for proven workflows, or `add-tasks` for new work patterns
 3. **Execute**: Use `get-task` to work through tasks one by one
 4. **Store**: Use `store-memory` to preserve valuable insights
+5. **Capture**: Use `create-task-template` to save successful workflows for reuse
 
 ## Support
 
