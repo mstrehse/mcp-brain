@@ -15,11 +15,11 @@ Please use with caution and expect potential issues. Contributions and feedback 
 
 ## Features
 
-- **🧠 Knowledge Management**: Store, retrieve, and organize markdown files by project
+- **🧠 Knowledge Management**: Store, retrieve, and organize markdown files in a unified knowledge base
 - **📋 Task Management**: Systematic task queue for complex workflow execution
 - **🎯 Template System**: Create and use reusable workflow templates with parameters
 - **💬 User Interaction**: Popup dialogs for user questions (Linux/OSX)
-- **🔄 Persistent Storage**: SQLite-based storage in user's home directory
+- **🔄 Persistent Storage**: File-based storage with configurable location (defaults to `./.brain`)
 
 ## Installation
 
@@ -49,6 +49,12 @@ go install github.com/mstrehse/mcp-brain@latest
 
 ## Configuration
 
+### Command Line Options
+
+The Brain MCP server supports the following command-line options:
+
+- `--brain-dir <path>`: Specify a custom directory for storing brain data (defaults to `./.brain` in current working directory)
+
 ### Cursor IDE
 
 Add this to your Cursor settings (`.cursor/mcp_servers.json` or through Settings > MCP):
@@ -59,6 +65,19 @@ Add this to your Cursor settings (`.cursor/mcp_servers.json` or through Settings
     "brain": {
       "command": "mcp-brain",
       "args": []
+    }
+  }
+}
+```
+
+To use a custom brain directory:
+
+```json
+{
+  "mcpServers": {
+    "brain": {
+      "command": "mcp-brain",
+      "args": ["--brain-dir", "/path/to/your/brain"]
     }
   }
 }
@@ -79,6 +98,19 @@ Add this to your Claude Desktop configuration (`~/Library/Application Support/Cl
 }
 ```
 
+To use a custom brain directory:
+
+```json
+{
+  "mcpServers": {
+    "brain": {
+      "command": "mcp-brain",
+      "args": ["--brain-dir", "/path/to/your/brain"]
+    }
+  }
+}
+```
+
 ### Other MCP-Compatible Editors
 
 For any editor that supports MCP, configure it to run the `mcp-brain` command. The server communicates via stdin/stdout using the MCP protocol.
@@ -89,14 +121,14 @@ Once configured, the Brain MCP server provides the following tools in your LLM c
 
 ### Knowledge Management
 
-- **`store-memory`**: Store information as markdown files organized by project
-- **`get-memory`**: Retrieve previously stored knowledge
-- **`list-memories`**: Get hierarchical structure of all memories for a project
+- **`store-memory`**: Store information as markdown files in the unified knowledge base
+- **`get-memory`**: Retrieve previously stored knowledge by file path
+- **`list-memories`**: Get hierarchical structure of all memories in the knowledge base
 - **`delete-memory`**: Remove outdated or incorrect information
 
 ### Task Management
 
-- **`add-tasks`**: Add multiple tasks to the queue for systematic execution
+- **`add-tasks`**: Add multiple tasks to the global queue for systematic execution
 - **`get-task`**: Retrieve and remove the next pending task from the queue
 
 ### Template Management
@@ -110,7 +142,7 @@ Once configured, the Brain MCP server provides the following tools in your LLM c
 
 ### User Interaction
 
-- **`ask-user`**: Ask users questions via popup dialogs (Linux/OSX)
+- **`ask-question`**: Ask users questions via popup dialogs (Linux/OSX)
 
 ## License
 
@@ -120,8 +152,8 @@ This project is licensed under the GPL3 License - see the [LICENSE](LICENSE) fil
 
 This MCP server is designed to integrate with LLM workflows by providing:
 
-1. **Systematic Task Execution**: Break complex work into manageable tasks
-2. **Knowledge Persistence**: Build institutional memory across sessions
+1. **Systematic Task Execution**: Break complex work into manageable tasks with a global queue
+2. **Knowledge Persistence**: Build institutional memory in a unified knowledge base
 3. **Template-Based Workflows**: Reusable task patterns with parameter substitution
 4. **User Interaction**: Popup dialogs instead of chat-based questions
 5. **Context Preservation**: Maintain understanding across interruptions

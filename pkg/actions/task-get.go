@@ -8,15 +8,10 @@ import (
 	"github.com/mstrehse/mcp-brain/pkg/contracts"
 )
 
-// NewGetTaskHandler creates a handler for getting tasks with dependency injection
-func NewGetTaskHandler(repo contracts.TaskRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+// NewTaskGetHandler creates a handler for getting tasks with dependency injection
+func NewTaskGetHandler(repo contracts.TaskRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	return func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		chatSessionID, err := request.RequireString("chat_session_id")
-		if err != nil {
-			return mcp.NewToolResultError("Missing 'chat_session_id' parameter: " + err.Error()), nil
-		}
-
-		task, err := repo.GetTask(chatSessionID)
+		task, err := repo.GetTask()
 		if err != nil {
 			return mcp.NewToolResultError("Failed to get task: " + err.Error()), nil
 		}

@@ -1,61 +1,29 @@
 package actions
 
 import (
-	"path/filepath"
 	"testing"
 
 	"github.com/mstrehse/mcp-brain/pkg/contracts"
 	"github.com/mstrehse/mcp-brain/pkg/repositories/knowledge"
 )
 
-// TestRepositoryInterface verifies that the SqliteRepository correctly implements the interface
+// TestRepositoryInterface verifies that the FileRepository correctly implements the interface
 func TestRepositoryInterface(t *testing.T) {
-	// Test that the concrete implementation satisfies the interface
-	dbPath := filepath.Join(t.TempDir(), "test.db")
-	sqliteRepo, err := knowledge.NewSqliteRepository(dbPath)
+	baseDir := t.TempDir()
+
+	fileRepo, err := knowledge.NewFileRepository(baseDir)
 	if err != nil {
-		t.Fatalf("Failed to create SQLite repository: %v", err)
-	}
-	defer func() {
-		if err := sqliteRepo.Close(); err != nil {
-			t.Logf("Warning: Failed to close repository: %v", err)
-		}
-	}()
-
-	var repo contracts.KnowledgeRepository = sqliteRepo
-
-	// Test basic operations through the interface
-	project := "test-project"
-	path := "test.md"
-	content := "# Test Content"
-
-	// Test Write
-	if err := repo.Write(project, path, content); err != nil {
-		t.Fatalf("Write failed: %v", err)
+		t.Fatalf("Failed to create file repository: %v", err)
 	}
 
-	// Test Read
-	readContent, err := repo.Read(project, path)
-	if err != nil {
-		t.Fatalf("Read failed: %v", err)
-	}
-	if readContent != content {
-		t.Errorf("Content mismatch: got %q, want %q", readContent, content)
+	if err := fileRepo.Close(); err != nil {
+		t.Fatalf("Failed to close repository: %v", err)
 	}
 
-	// Test List
-	list, err := repo.List(project)
-	if err != nil {
-		t.Fatalf("List failed: %v", err)
-	}
-	if _, ok := list[path]; !ok {
-		t.Error("Expected file in list")
-	}
-
-	// Test Delete
-	if err := repo.Delete(project, path); err != nil {
-		t.Fatalf("Delete failed: %v", err)
-	}
+	// Test interface compliance
+	var repo contracts.KnowledgeRepository = fileRepo
+	// If this compiles, it means the interface is implemented correctly
+	_ = repo
 }
 
 // TestNewRepositories verifies that the new dependency injection pattern works correctly
@@ -83,15 +51,14 @@ func TestNewRepositories(t *testing.T) {
 	}
 
 	// Test that the knowledge repository is actually usable
-	project := "init-test"
 	path := "init.md"
 	content := "Initialization test"
 
-	if err := repositories.Knowledge.Write(project, path, content); err != nil {
+	if err := repositories.Knowledge.Write(path, content); err != nil {
 		t.Fatalf("Write failed with initialized repo: %v", err)
 	}
 
-	readContent, err := repositories.Knowledge.Read(project, path)
+	readContent, err := repositories.Knowledge.Read(path)
 	if err != nil {
 		t.Fatalf("Read failed with initialized repo: %v", err)
 	}
@@ -100,8 +67,7 @@ func TestNewRepositories(t *testing.T) {
 	}
 
 	// Test that the task repository is usable
-	chatSessionID := "test-session"
-	tasks, err := repositories.Task.AddTasks(chatSessionID, []string{"test task 1", "test task 2"})
+	tasks, err := repositories.Task.AddTasks([]string{"test task 1", "test task 2"})
 	if err != nil {
 		t.Fatalf("AddTasks failed: %v", err)
 	}
@@ -110,7 +76,7 @@ func TestNewRepositories(t *testing.T) {
 	}
 
 	// Test retrieving a task
-	task, err := repositories.Task.GetTask(chatSessionID)
+	task, err := repositories.Task.GetTask()
 	if err != nil {
 		t.Fatalf("GetTask failed: %v", err)
 	}

@@ -7,18 +7,14 @@ import (
 	"github.com/mstrehse/mcp-brain/pkg/contracts"
 )
 
-// NewReadKnowledgeHandler creates a handler for reading knowledge with dependency injection
-func NewReadKnowledgeHandler(repo contracts.KnowledgeRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+// NewMemoryGetHandler creates a handler for reading knowledge with dependency injection
+func NewMemoryGetHandler(repo contracts.KnowledgeRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	return func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		project, err := request.RequireString("project")
-		if err != nil {
-			return mcp.NewToolResultError("Missing 'project' parameter: " + err.Error()), nil
-		}
 		path, err := request.RequireString("path")
 		if err != nil {
 			return mcp.NewToolResultError("Missing 'path' parameter: " + err.Error()), nil
 		}
-		content, err := repo.Read(project, path)
+		content, err := repo.Read(path)
 		if err != nil {
 			return mcp.NewToolResultError("Failed to read file: " + err.Error()), nil
 		}

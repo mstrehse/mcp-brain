@@ -8,15 +8,10 @@ import (
 	"github.com/mstrehse/mcp-brain/pkg/contracts"
 )
 
-// NewListKnowledgeHandler creates a handler for listing knowledge with dependency injection
-func NewListKnowledgeHandler(repo contracts.KnowledgeRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+// NewMemoriesListHandler creates a handler for listing knowledge with dependency injection
+func NewMemoriesListHandler(repo contracts.KnowledgeRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	return func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		project, err := request.RequireString("project")
-		if err != nil {
-			return mcp.NewToolResultError("Missing 'project' parameter: " + err.Error()), nil
-		}
-
-		dirStructure, err := repo.List(project)
+		dirStructure, err := repo.List()
 		if err != nil {
 			return mcp.NewToolResultError("Failed to list memories: " + err.Error()), nil
 		}

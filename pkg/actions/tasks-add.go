@@ -8,14 +8,9 @@ import (
 	"github.com/mstrehse/mcp-brain/pkg/contracts"
 )
 
-// NewAddTasksHandler creates a handler for adding tasks with dependency injection
-func NewAddTasksHandler(repo contracts.TaskRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+// NewTasksAddHandler creates a handler for adding tasks with dependency injection
+func NewTasksAddHandler(repo contracts.TaskRepository) func(context.Context, mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	return func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		chatSessionID, err := request.RequireString("chat_session_id")
-		if err != nil {
-			return mcp.NewToolResultError("Missing 'chat_session_id' parameter: " + err.Error()), nil
-		}
-
 		contents, err := request.RequireStringSlice("contents")
 		if err != nil {
 			return mcp.NewToolResultError("Missing 'contents' parameter: " + err.Error()), nil
@@ -25,7 +20,7 @@ func NewAddTasksHandler(repo contracts.TaskRepository) func(context.Context, mcp
 			return mcp.NewToolResultError("Contents array cannot be empty"), nil
 		}
 
-		tasks, err := repo.AddTasks(chatSessionID, contents)
+		tasks, err := repo.AddTasks(contents)
 		if err != nil {
 			return mcp.NewToolResultError("Failed to add tasks: " + err.Error()), nil
 		}

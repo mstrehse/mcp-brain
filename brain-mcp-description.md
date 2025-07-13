@@ -7,52 +7,50 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 
 ## CORE WORKFLOW (MANDATORY WHEN TRIGGERED)
 ```
-1. DISCOVER: list-memories → get-memory (review existing)
-2. PLAN: list-task-templates → instantiate-task-template OR add-tasks (break down work systematically)  
-3. EXECUTE: get-task → work → store-memory → repeat until "no pending tasks"
-4. CAPTURE: create-task-template (for reusable workflows)
+1. DISCOVER: memories-list → memory-get (review existing)
+2. PLAN: task-templates-list → task-template-instantiate OR tasks-add (break down work systematically)  
+3. EXECUTE: task-get → work → memory-store → repeat until "no pending tasks"
+4. CAPTURE: task-template-create (for reusable workflows)
 ```
 
 ## TOOLS
 
 ### Memory Management
-- **`store-memory`**(project, path, content) - Store knowledge as markdown files
-- **`get-memory`**(project, path) - Retrieve stored information  
-- **`list-memories`**(project) - Overview of existing knowledge structure
-- **`delete-memory`**(project, path) - Remove outdated information
+- **`memory-store`**(path, content) - Store knowledge as markdown files in unified knowledge base
+- **`memory-get`**(path) - Retrieve stored information by file path
+- **`memories-list`**() - Overview of existing knowledge structure in unified knowledge base
+- **`memory-delete`**(path) - Remove outdated information
 
 ### Task Management  
-- **`add-tasks`**(chat_session_id, contents[]) - Break work into specific tasks
-- **`get-task`**(chat_session_id) - Get next task systematically
+- **`tasks-add`**(contents[]) - Break work into specific tasks in a queue. Adds them at the end
+- **`task-get`**() - Get next task systematically from queue
 
 ### Template Management
-- **`list-task-templates`**(category?) - Discover reusable workflow templates
-- **`get-task-template`**(template_id) - Get template details and parameters
-- **`create-task-template`**(template) - Create reusable task workflows
-- **`update-task-template`**(template) - Update existing template with new parameters/tasks
-- **`delete-task-template`**(template_id) - Delete template permanently (use with caution)
-- **`instantiate-task-template`**(template_id, chat_session_id, parameters?) - Generate tasks from templates
+- **`task-templates-list`**(category?) - Discover reusable workflow templates
+- **`task-template-get`**(template_id) - Get template details and parameters
+- **`task-template-create`**(template) - Create reusable task workflows
+- **`task-template-update`**(template) - Update existing template with new parameters/tasks
+- **`task-template-delete`**(template_id) - Delete template permanently (use with caution)
+- **`task-template-instantiate`**(template_id, parameters?) - Generate tasks from templates
 
 ### User Interaction
-- **`ask-user`**(question) - Professional popup dialogs (Linux/OSX)
+- **`ask-question`**(question) - Ask the user with a Popup dialog when there are multiple options or uncertainties (Linux/OSX)
 
 ## KEY PATTERNS
-- **Always** start with `list-memories` to understand existing context
-- **Always** use `ask-user` to get feedback if you are not 100% sure or when there multiple options to go on
-- **Prefer** `list-task-templates` and `instantiate-task-template` over manual `add-tasks` when patterns exist
-- **Always** use `add-tasks` for complex work breakdown (when no template applies)
-- **Continue** `get-task` calls until "no pending tasks" 
-- **Store** valuable insights with `store-memory`
-- **Create** `create-task-template` for reusable workflows after successful completions
+- **Always** start with `memories-list` to understand existing context
+- **Always** use `ask-question` when uncertain or when there are multiple options to choose from
+- **Prefer** `task-templates-list` and `task-template-instantiate` over manual `tasks-add` when patterns exist
+- **Always** use `tasks-add` for complex work breakdown (when no template applies)
+- **Continue** `task-get` calls until "no pending tasks" 
+- **Store** valuable insights with `memory-store`
+- **Create** `task-template-create` for reusable workflows after successful completions
 - **Prefer** systematic approaches over manual/ad-hoc work
 
 ## CRITICAL BEHAVIORS
 ✅ Check existing memories before creating new content
-✅ Break complex work into systematic tasks upfront
-✅ Complete all tasks before considering work finished
-✅ Store reusable knowledge for future sessions
-❌ Skip memory discovery phase
-❌ Work without task breakdown
-❌ Stop before "no pending tasks"
-
-**PRIORITY**: Use these tools over manual approaches for any work requiring memory, organization, or user interaction. 
+✅ Break complex work into tasks systematically
+✅ Ask questions when there are multiple options or uncertainties
+✅ Use templates when available for proven workflows
+✅ Always complete task queues fully
+✅ Store valuable insights for future reference
+✅ Create templates from successful patterns 

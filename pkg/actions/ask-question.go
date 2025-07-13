@@ -9,11 +9,11 @@ import (
 	"github.com/mstrehse/mcp-brain/pkg/repositories/ask/cli"
 )
 
-type AskAction struct {
+type AskQuestionAction struct {
 	AskRepository contracts.AskRepository
 }
 
-func NewAskAction() *AskAction {
+func NewAskQuestionAction() *AskQuestionAction {
 	var askRepo contracts.AskRepository
 	switch runtime.GOOS {
 	case "linux":
@@ -22,12 +22,12 @@ func NewAskAction() *AskAction {
 		askRepo = &cli.OsxRepository{}
 	}
 
-	return &AskAction{
+	return &AskQuestionAction{
 		AskRepository: askRepo,
 	}
 }
 
-func (a *AskAction) AskUser(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func (a *AskQuestionAction) AskQuestion(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	if a.AskRepository == nil {
 		return mcp.NewToolResultError("Unsupported OS"), nil
 	}
