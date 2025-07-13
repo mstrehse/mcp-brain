@@ -27,7 +27,6 @@ func TestFileRepository(t *testing.T) {
 	template := &contracts.TaskTemplate{
 		Name:        "Test Template",
 		Description: "A template for testing",
-		Category:    "testing",
 		Parameters: map[string]contracts.Parameter{
 			"project_name": {
 				Type:        "string",
@@ -81,9 +80,6 @@ func TestFileRepository(t *testing.T) {
 	if retrieved.Description != template.Description {
 		t.Errorf("Expected description %s, got %s", template.Description, retrieved.Description)
 	}
-	if retrieved.Category != template.Category {
-		t.Errorf("Expected category %s, got %s", template.Category, retrieved.Category)
-	}
 	if len(retrieved.Parameters) != len(template.Parameters) {
 		t.Errorf("Expected %d parameters, got %d", len(template.Parameters), len(retrieved.Parameters))
 	}
@@ -107,26 +103,23 @@ func TestFileRepositoryListTemplates(t *testing.T) {
 	}
 	defer func() { _ = repo.Close() }()
 
-	// Create templates in different categories
+	// Create multiple templates
 	templates := []*contracts.TaskTemplate{
 		{
 			Name:        "Development Template",
 			Description: "For development tasks",
-			Category:    "development",
 			Parameters:  map[string]contracts.Parameter{},
 			Tasks:       []string{"Dev task 1", "Dev task 2"},
 		},
 		{
 			Name:        "Testing Template",
 			Description: "For testing tasks",
-			Category:    "testing",
 			Parameters:  map[string]contracts.Parameter{},
 			Tasks:       []string{"Test task 1", "Test task 2"},
 		},
 		{
 			Name:        "Another Development Template",
 			Description: "Another dev template",
-			Category:    "development",
 			Parameters:  map[string]contracts.Parameter{},
 			Tasks:       []string{"Dev task 3"},
 		},
@@ -141,38 +134,12 @@ func TestFileRepositoryListTemplates(t *testing.T) {
 	}
 
 	// Test listing all templates
-	allTemplates, err := repo.ListTemplates("")
+	allTemplates, err := repo.ListTemplates()
 	if err != nil {
 		t.Fatalf("Failed to list all templates: %v", err)
 	}
 	if len(allTemplates) != 3 {
 		t.Errorf("Expected 3 templates, got %d", len(allTemplates))
-	}
-
-	// Test listing templates by category
-	devTemplates, err := repo.ListTemplates("development")
-	if err != nil {
-		t.Fatalf("Failed to list development templates: %v", err)
-	}
-	if len(devTemplates) != 2 {
-		t.Errorf("Expected 2 development templates, got %d", len(devTemplates))
-	}
-
-	testingTemplates, err := repo.ListTemplates("testing")
-	if err != nil {
-		t.Fatalf("Failed to list testing templates: %v", err)
-	}
-	if len(testingTemplates) != 1 {
-		t.Errorf("Expected 1 testing template, got %d", len(testingTemplates))
-	}
-
-	// Test listing non-existent category
-	nonExistentTemplates, err := repo.ListTemplates("nonexistent")
-	if err != nil {
-		t.Fatalf("Failed to list non-existent category templates: %v", err)
-	}
-	if len(nonExistentTemplates) != 0 {
-		t.Errorf("Expected 0 templates for non-existent category, got %d", len(nonExistentTemplates))
 	}
 }
 
@@ -195,7 +162,6 @@ func TestFileRepositoryUpdateTemplate(t *testing.T) {
 	template := &contracts.TaskTemplate{
 		Name:        "Original Template",
 		Description: "Original description",
-		Category:    "original",
 		Parameters:  map[string]contracts.Parameter{},
 		Tasks:       []string{"Original task"},
 	}
@@ -211,7 +177,6 @@ func TestFileRepositoryUpdateTemplate(t *testing.T) {
 	// Update the template
 	template.Name = "Updated Template"
 	template.Description = "Updated description"
-	template.Category = "updated"
 	template.Tasks = []string{"Updated task 1", "Updated task 2"}
 
 	err = repo.UpdateTemplate(template)
@@ -235,9 +200,6 @@ func TestFileRepositoryUpdateTemplate(t *testing.T) {
 	}
 	if updated.Description != "Updated description" {
 		t.Errorf("Expected description 'Updated description', got %s", updated.Description)
-	}
-	if updated.Category != "updated" {
-		t.Errorf("Expected category 'updated', got %s", updated.Category)
 	}
 	if len(updated.Tasks) != 2 {
 		t.Errorf("Expected 2 tasks, got %d", len(updated.Tasks))
@@ -263,7 +225,6 @@ func TestFileRepositoryDeleteTemplate(t *testing.T) {
 	template := &contracts.TaskTemplate{
 		Name:        "Template to Delete",
 		Description: "This template will be deleted",
-		Category:    "temporary",
 		Parameters:  map[string]contracts.Parameter{},
 		Tasks:       []string{"Temporary task"},
 	}
@@ -311,7 +272,6 @@ func TestFileRepositoryInstantiateTemplate(t *testing.T) {
 	template := &contracts.TaskTemplate{
 		Name:        "Project Template",
 		Description: "Creates a new project",
-		Category:    "development",
 		Parameters: map[string]contracts.Parameter{
 			"project_name": {
 				Type:        "string",

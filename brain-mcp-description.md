@@ -26,7 +26,7 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 - **`task-get`**() - Get next task systematically from queue
 
 ### Template Management
-- **`task-templates-list`**(category?) - Discover reusable workflow templates
+- **`task-templates-list`**() - Discover reusable workflow templates
 - **`task-template-get`**(template_id) - Get template details and parameters
 - **`task-template-create`**(template) - Create reusable task workflows
 - **`task-template-update`**(template) - Update existing template with new parameters/tasks

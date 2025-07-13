@@ -138,10 +138,7 @@ func main() {
 
 	// Add template management tools
 	taskTemplatesListTool := mcp.NewTool("task-templates-list",
-		mcp.WithDescription("List all available task templates, optionally filtered by category. DISCOVERY PATTERN: Use this tool to discover reusable workflows and task patterns. Templates provide structured approaches to common work like code reviews, bug fixes, research, and development tasks. Start with this tool to see what templates are available before creating manual task lists. Always use the full functionality of this tool and its parameters."),
-		mcp.WithString("category",
-			mcp.Description("Optional category filter (e.g., 'development', 'testing', 'research')."),
-		),
+		mcp.WithDescription("List all available task templates. DISCOVERY PATTERN: Use this tool to discover reusable workflows and task patterns. Templates provide structured approaches to common work like code reviews, bug fixes, research, and development tasks. Start with this tool to see what templates are available before creating manual task lists. Always use the full functionality of this tool and its parameters."),
 	)
 
 	taskTemplateGetTool := mcp.NewTool("task-template-get",

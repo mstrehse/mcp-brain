@@ -32,11 +32,8 @@ func TestFileRepository(t *testing.T) {
 		t.Errorf("Expected 3 tasks, got %d", len(tasks))
 	}
 
-	// Verify task IDs are sequential
+	// Verify task contents
 	for i, task := range tasks {
-		if task.ID != i+1 {
-			t.Errorf("Expected task ID %d, got %d", i+1, task.ID)
-		}
 		if task.Content != contents[i] {
 			t.Errorf("Expected content %s, got %s", contents[i], task.Content)
 		}

@@ -93,8 +93,8 @@ func (r *FileRepository) GetTemplate(id string) (*contracts.TaskTemplate, error)
 	return &template, nil
 }
 
-// ListTemplates lists all templates, optionally filtered by category
-func (r *FileRepository) ListTemplates(category string) ([]*contracts.TaskTemplate, error) {
+// ListTemplates lists all templates
+func (r *FileRepository) ListTemplates() ([]*contracts.TaskTemplate, error) {
 	files, err := os.ReadDir(r.baseDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read templates directory: %w", err)
@@ -113,11 +113,6 @@ func (r *FileRepository) ListTemplates(category string) ([]*contracts.TaskTempla
 		template, err := r.GetTemplate(templateID)
 		if err != nil {
 			// Skip templates that can't be loaded
-			continue
-		}
-
-		// Filter by category if specified
-		if category != "" && template.Category != category {
 			continue
 		}
 

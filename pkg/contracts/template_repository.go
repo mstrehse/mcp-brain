@@ -7,7 +7,6 @@ type TaskTemplate struct {
 	ID            string               `json:"id"`
 	Name          string               `json:"name"`
 	Description   string               `json:"description"`
-	Category      string               `json:"category"`
 	Parameters    map[string]Parameter `json:"parameters"`
 	Tasks         []string             `json:"tasks"`
 	Prerequisites []string             `json:"prerequisites,omitempty"`
@@ -39,8 +38,8 @@ type TaskTemplateRepository interface {
 	// GetTemplate retrieves a template by ID
 	GetTemplate(id string) (*TaskTemplate, error)
 
-	// ListTemplates lists all templates, optionally filtered by category
-	ListTemplates(category string) ([]*TaskTemplate, error)
+	// ListTemplates lists all templates
+	ListTemplates() ([]*TaskTemplate, error)
 
 	// UpdateTemplate updates an existing template
 	UpdateTemplate(template *TaskTemplate) error

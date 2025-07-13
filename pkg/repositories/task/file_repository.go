@@ -14,7 +14,6 @@ import (
 // TasksFile represents the structure of the tasks.yaml file
 type TasksFile struct {
 	Tasks      []*contracts.Task `yaml:"tasks"`
-	NextID     int               `yaml:"next_id"`
 	LastUpdate time.Time         `yaml:"last_update"`
 }
 
@@ -41,7 +40,6 @@ func NewFileRepository(baseDir string) (*FileRepository, error) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		if err := repo.saveTasksFile(&TasksFile{
 			Tasks:      []*contracts.Task{},
-			NextID:     1,
 			LastUpdate: time.Now(),
 		}); err != nil {
 			return nil, fmt.Errorf("failed to initialize tasks file: %w", err)
@@ -63,7 +61,6 @@ func (r *FileRepository) loadTasksFile() (*TasksFile, error) {
 		if os.IsNotExist(err) {
 			return &TasksFile{
 				Tasks:      []*contracts.Task{},
-				NextID:     1,
 				LastUpdate: time.Now(),
 			}, nil
 		}
@@ -113,13 +110,11 @@ func (r *FileRepository) AddTasks(contents []string) ([]*contracts.Task, error) 
 
 	for _, content := range contents {
 		task := &contracts.Task{
-			ID:        tasksFile.NextID,
 			Content:   content,
 			CreatedAt: now,
 		}
 		newTasks = append(newTasks, task)
 		tasksFile.Tasks = append(tasksFile.Tasks, task)
-		tasksFile.NextID++
 	}
 
 	if err := r.saveTasksFile(tasksFile); err != nil {
@@ -163,7 +158,6 @@ func (r *FileRepository) ClearAllTasks() error {
 
 	tasksFile := &TasksFile{
 		Tasks:      []*contracts.Task{},
-		NextID:     1,
 		LastUpdate: time.Now(),
 	}
 
