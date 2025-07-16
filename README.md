@@ -42,9 +42,6 @@ Please use with caution and expect potential issues. Contributions and feedback 
 ```bash
 # Install Go (if not already installed)
 # Visit https://golang.org/dl/ for installation instructions
-
-# Install the Brain MCP server
-go install github.com/mstrehse/mcp-brain@latest
 ```
 
 ## Configuration
@@ -63,7 +60,7 @@ Add this to your Cursor settings (`.cursor/mcp_servers.json` or through Settings
 {
   "mcpServers": {
     "brain": {
-      "command": "mcp-brain",
+      "command": "go run github.com/mstrehse/mcp-brain@latest",
       "args": []
     }
   }
@@ -76,7 +73,7 @@ To use a custom brain directory:
 {
   "mcpServers": {
     "brain": {
-      "command": "mcp-brain",
+      "command": "go run github.com/mstrehse/mcp-brain@latest",
       "args": ["--brain-dir", "/path/to/your/brain"]
     }
   }
@@ -91,7 +88,7 @@ Add this to your Claude Desktop configuration (`~/Library/Application Support/Cl
 {
   "mcpServers": {
     "brain": {
-      "command": "mcp-brain",
+      "command": "go run github.com/mstrehse/mcp-brain@latest",
       "args": []
     }
   }
@@ -104,7 +101,7 @@ To use a custom brain directory:
 {
   "mcpServers": {
     "brain": {
-      "command": "mcp-brain",
+      "command": "go run github.com/mstrehse/mcp-brain@latest",
       "args": ["--brain-dir", "/path/to/your/brain"]
     }
   }
