@@ -37,13 +37,6 @@ Please use with caution and expect potential issues. Contributions and feedback 
 ##### macOS
 - **AppleScript** - Built-in (no additional installation required)
 
-### Install
-
-```bash
-# Install Go (if not already installed)
-# Visit https://golang.org/dl/ for installation instructions
-```
-
 ## Configuration
 
 ### Command Line Options
