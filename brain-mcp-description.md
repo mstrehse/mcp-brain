@@ -49,6 +49,14 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 ## CRITICAL BEHAVIORS
 ✅ Check existing memories before creating new content
 ✅ Break complex work into tasks systematically
+
+# MANDATORY RULES
+
+🚨 MANDATORY: THE FIRST THING YOU MUST ALWAY TO IS TO LIST YOUR MEMORIES!!! EVEN IT YOU ARE 100% SURE YOU CAN SOLVE THE TASK WITHOUT, ITS PROHIBITED TO DO WITHOUT LISTING MEMORY!!! READ RELEVANT INFORMATION IN MEMORY BEFORE READING ANY FILES!!!
+
+🚨 MANDATORY: ONLY ASK USING THE MCP ASK TOOL WHENEVER INFORMATION ARE UNCLEAR OR THERE MULTIPLE OPTIONS TO PROCEED!!!
+
+🚨 MANDATORY: ALWAYS SPLIT THE TASK INTO SMALLER TASKS AND ADD THE TO THE TASK QUEUE. SOLVE ONE AFTER THE OTHER!!!
 ✅ Ask questions when there are multiple options or uncertainties
 ✅ Use templates when available for proven workflows
 ✅ Always complete task queues fully
