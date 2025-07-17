@@ -50,6 +50,10 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 ✅ Check existing memories before creating new content
 ✅ Break complex work into tasks systematically
 ✅ Ask questions when there are multiple options or uncertainties
+✅ Use templates when available for proven workflows
+✅ Always complete task queues fully
+✅ Store valuable insights for future reference
+✅ Create templates from successful patterns 
 
 # MANDATORY RULES
 
@@ -58,7 +62,3 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 🚨 MANDATORY: ONLY ASK USING THE MCP ASK TOOL WHENEVER INFORMATION ARE UNCLEAR OR THERE MULTIPLE OPTIONS TO PROCEED!!!
 
 🚨 MANDATORY: ALWAYS SPLIT THE TASK INTO SMALLER TASKS AND ADD THE TO THE TASK QUEUE. SOLVE ONE AFTER THE OTHER!!!
-✅ Use templates when available for proven workflows
-✅ Always complete task queues fully
-✅ Store valuable insights for future reference
-✅ Create templates from successful patterns 
