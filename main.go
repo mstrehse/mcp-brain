@@ -3,7 +3,7 @@ package main
 import (
 	_ "embed"
 	"flag"
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -28,7 +28,7 @@ func main() {
 		// Default to ./.brain (current working directory)
 		cwd, err := os.Getwd()
 		if err != nil {
-			fmt.Printf("Error getting current working directory: %v\n", err)
+			log.Fatalf("Error getting current working directory: %v\n", err)
 			return
 		}
 		baseDir = filepath.Join(cwd, ".brain")
@@ -37,14 +37,14 @@ func main() {
 	// Create repositories with proper dependency injection
 	repositories, err := actions.NewRepositories(baseDir)
 	if err != nil {
-		fmt.Printf("Error initializing repositories: %v\n", err)
+		log.Fatalf("Error initializing repositories: %v\n", err)
 		return
 	}
 
 	// Ensure database is closed when program exits
 	defer func() {
 		if err := repositories.Close(); err != nil {
-			fmt.Printf("Error closing repositories: %v\n", err)
+			log.Fatalf("Error closing repositories: %v\n", err)
 		}
 	}()
 
@@ -208,6 +208,6 @@ func main() {
 
 	// Start the stdio server
 	if err := server.ServeStdio(s); err != nil {
-		fmt.Printf("Server error: %v\n", err)
+		log.Fatalf("Server error: %v\n", err)
 	}
 }
