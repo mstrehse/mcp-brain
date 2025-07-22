@@ -101,6 +101,22 @@ To use a custom brain directory:
 }
 ```
 
+## Custom Rules / Modes
+
+Event though the tool contains a description for LLMs on how to use it, you get the best results when you include a custom rules or for Cursor a custom mode with description, where you explicitly tell the LLM to use the mcp. It can look something like:
+
+```
+# MANDATORY RULES TO APPLY TO EVERY ANSWER
+
+🚨 MANDATORY: THE FIRST THING YOU MUST ALWAY TO IS TO LIST YOUR MEMORIES!!! EVEN IT YOU ARE 100% SURE YOU CAN SOLVE THE TASK WITHOUT, ITS PROHIBITED TO DO WITHOUT LISTING MEMORY!!! READ RELEVANT INFORMATION IN MEMORY BEFORE READING ANY FILES!!!
+
+🚨 MANDATORY: WHENEVER YOUR ARE THINKING "LET ME LOOK...", "I HAVE TO FIND OUT..." OR ANYTHING SIMILAR, LOOK INSIDE THE MEMORY IF THERE IS ALREADY EXISTING INFORMAITON ABOUT THIS TOPIC.
+
+🚨 MANDATORY: ONLY ASK USING THE MCP ASK TOOL WHENEVER INFORMATION ARE UNCLEAR OR THERE MULTIPLE OPTIONS TO PROCEED!!!
+
+🚨 MANDATORY: ALWAYS SPLIT THE TASK INTO SMALLER TASKS AND ADD THE TO THE TASK QUEUE. SOLVE ONE AFTER THE OTHER!!!
+```
+
 ### Other MCP-Compatible Editors
 
 For any editor that supports MCP, configure it to run the `mcp-brain` command. The server communicates via stdin/stdout using the MCP protocol.
