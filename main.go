@@ -12,8 +12,8 @@ import (
 	"github.com/mstrehse/mcp-brain/pkg/actions"
 )
 
-//go:embed brain-mcp-description.md
-var serverDescription string
+//go:embed brain-mcp-instructions.md
+var serverInstructions string
 
 func main() {
 	// Define command line flags
@@ -50,9 +50,10 @@ func main() {
 
 	// Create a new MCP server with embedded description
 	s := server.NewMCPServer(
-		serverDescription,
+		"Gives your LLM agent a brain and the ability to remember things",
 		"1.0.0",
 		server.WithToolCapabilities(false),
+		server.WithInstructions(serverInstructions),
 	)
 
 	// Add memory-store tool
@@ -118,10 +119,6 @@ func main() {
 	// Add task management tools
 	tasksAddTool := mcp.NewTool("tasks-add",
 		mcp.WithDescription("Add multiple tasks to the queue for the current chat session. WORKFLOW PATTERN: When facing complex work, immediately break it down into specific tasks using this tool. Create a complete task list upfront, then use 'task-get' to retrieve and complete them one by one. This ensures systematic completion and prevents missing important steps. This is mandatory - tasks should always be created for future work. Always use the full functionality of this tool and its parameters."),
-		mcp.WithString("chat_session_id",
-			mcp.Required(),
-			mcp.Description("The ID of the current chat session."),
-		),
 		mcp.WithArray("contents",
 			mcp.Required(),
 			mcp.Description("Array of task descriptions to add."),
@@ -130,10 +127,6 @@ func main() {
 
 	taskGetTool := mcp.NewTool("task-get",
 		mcp.WithDescription("Retrieve and remove the next pending task from the queue for the current chat session. SYSTEMATIC WORKFLOW: After completing each task, immediately call this tool to get the next task. This ensures you work through your task list systematically and don't miss any steps. Continue calling this tool until you get 'no pending tasks' - only then is your work complete. This is mandatory - always check for remaining tasks before considering work complete. Always use the full functionality of this tool and its parameters."),
-		mcp.WithString("chat_session_id",
-			mcp.Required(),
-			mcp.Description("The ID of the current chat session."),
-		),
 	)
 
 	// Add template management tools
@@ -162,10 +155,6 @@ func main() {
 		mcp.WithString("template_id",
 			mcp.Required(),
 			mcp.Description("The ID of the template to instantiate."),
-		),
-		mcp.WithString("chat_session_id",
-			mcp.Required(),
-			mcp.Description("The ID of the current chat session."),
 		),
 		mcp.WithString("parameters",
 			mcp.Description("JSON object containing parameter values for the template."),

@@ -1,6 +1,13 @@
-AI memory system for persistent knowledge storage, systematic execution, and intelligent user interaction.
+# MANDATORY RULES
+
+🚨 MANDATORY: THE FIRST THING YOU MUST ALWAY TO IS TO LIST YOUR MEMORIES!!! EVEN IT YOU ARE 100% SURE YOU CAN SOLVE THE TASK WITHOUT, ITS PROHIBITED TO DO WITHOUT LISTING MEMORY!!! READ RELEVANT INFORMATION IN MEMORY BEFORE READING ANY FILES!!!
+
+🚨 MANDATORY: ONLY ASK USING THE MCP ASK TOOL WHENEVER INFORMATION ARE UNCLEAR OR THERE MULTIPLE OPTIONS TO PROCEED!!!
+
+🚨 MANDATORY: ALWAYS SPLIT THE TASK INTO SMALLER TASKS AND ADD THE TO THE TASK QUEUE. SOLVE ONE AFTER THE OTHER!!!
 
 ## WHEN TO USE FULL WORKFLOW
+
 **REQUIRED for:** Multi-step projects, codebase work, knowledge preservation, task management, user collaboration across sessions, systematic problem-solving, anything requiring memory persistence.
 
 **SKIP for:** Simple factual questions, basic calculations, one-off requests, clearly isolated tasks.
@@ -54,11 +61,3 @@ AI memory system for persistent knowledge storage, systematic execution, and int
 ✅ Always complete task queues fully
 ✅ Store valuable insights for future reference
 ✅ Create templates from successful patterns 
-
-# MANDATORY RULES
-
-🚨 MANDATORY: THE FIRST THING YOU MUST ALWAY TO IS TO LIST YOUR MEMORIES!!! EVEN IT YOU ARE 100% SURE YOU CAN SOLVE THE TASK WITHOUT, ITS PROHIBITED TO DO WITHOUT LISTING MEMORY!!! READ RELEVANT INFORMATION IN MEMORY BEFORE READING ANY FILES!!!
-
-🚨 MANDATORY: ONLY ASK USING THE MCP ASK TOOL WHENEVER INFORMATION ARE UNCLEAR OR THERE MULTIPLE OPTIONS TO PROCEED!!!
-
-🚨 MANDATORY: ALWAYS SPLIT THE TASK INTO SMALLER TASKS AND ADD THE TO THE TASK QUEUE. SOLVE ONE AFTER THE OTHER!!!
