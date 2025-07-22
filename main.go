@@ -52,7 +52,7 @@ func main() {
 	s := server.NewMCPServer(
 		"Gives your LLM agent a brain and the ability to remember things",
 		"1.0.0",
-		server.WithToolCapabilities(false),
+		server.WithToolCapabilities(true),
 		server.WithInstructions(serverInstructions),
 	)
 
