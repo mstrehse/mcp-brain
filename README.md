@@ -73,7 +73,7 @@ To use a custom brain directory:
 }
 ```
 
-At the moment there is a problem with cursors loading of mcp servers, which causes the above configuration to fail. Instead you have to install the mcp server application by running `go install github.com/mstrehse/mcp-brain@latest` in your terminal and use the mcp-brain command inside the cursor config like so:
+⚠️ At the moment there is a problem with cursors loading of mcp servers, which causes the above configuration to fail. Instead you have to install the mcp server application by running `go install github.com/mstrehse/mcp-brain@latest` in your terminal and use the mcp-brain command inside the cursor config like so:
 
 ```json
 {
