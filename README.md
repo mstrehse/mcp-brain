@@ -73,6 +73,19 @@ To use a custom brain directory:
 }
 ```
 
+At the moment there is a problem with cursors loading of mcp servers, which causes the above configuration to fail. Instead you have to install the mcp server application by running `go install github.com/mstrehse/mcp-brain@latest` in your terminal and use the mcp-brain command inside the cursor config like so:
+
+```json
+{
+  "mcpServers": {
+    "brain": {
+      "command": "mcp-brain",
+      "args": ["--brain-dir", "/path/to/your/brain"]
+    }
+  }
+}
+```
+
 ### Claude Desktop
 
 Add this to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS or `%APPDATA%/Claude/claude_desktop_config.json` on Windows):
